@@ -2,6 +2,7 @@
 #include <random>
 
 #include "ObjectId.hpp"
+#include "BsonException.hpp"
 
 namespace bsoncpp {
     static std::random_device rd;
@@ -27,7 +28,7 @@ namespace bsoncpp {
             memcpy(m_id, value.c_str(), ObjectId::SIZE);
         }
         else {
-            throw "Illegal ObjectId: " + value;
+            throw BsonException("Illegal ObjectId: " + value);
         }
     }
 

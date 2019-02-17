@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 
+#include "BsonException.hpp"
+
 namespace bsoncpp {
     class Document;
     class BsonArray;
@@ -69,39 +71,39 @@ namespace bsoncpp {
 
 
         virtual int32_t asInt32() {
-            throw "Not INT32";
+            throw BsonException("Not INT32");
         }
 
         virtual int64_t asInt64() {
-            throw "Not INT64";
+            throw BsonException("Not INT64");
         }
 
         virtual double asDouble() {
-            throw "Not DOUBLE";
+            throw BsonException("Not DOUBLE");
         }
 
         virtual bool asBool() {
-            throw "Not BOOL";
+            throw BsonException("Not BOOL");
         }
 
         virtual std::string& asString() {
-            throw "Not String";
+            throw BsonException("Not String");
         }
 
         virtual Document& asDocument() {
-            throw "Not BSON Object";
+            throw BsonException("Not BSON Object");
         }
 
         virtual BsonArray& asArray() {
-            throw "Not ARRAY of BSON Object";
+            throw BsonException("Not ARRAY of BSON Object");
         }
 
         virtual std::vector<uint8_t>& asBinary() {
-            throw "Not BINARY";
+            throw BsonException("Not BINARY");
         }
 
         virtual ObjectId& asObjectId() {
-            throw "Not ObjectID";
+            throw BsonException("Not ObjectID");
         }
 
         static std::shared_ptr<BsonElement> create(int32_t value);

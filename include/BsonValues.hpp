@@ -156,7 +156,7 @@ namespace bsoncpp {
         }
 
         std::string toJson() override {
-            throw "Binary toJson not supported!";
+            throw BsonException("Binary toJson not supported!");
         }
 
     private:
