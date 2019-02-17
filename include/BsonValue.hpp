@@ -4,45 +4,18 @@
 #include <iostream>
 #include <vector>
 
+#include "BsonElement.hpp"
+
 namespace bsoncpp {
     class Bson;
     class BsonArray;
 
-    /**
-     * Bson Type
-     */
-    enum class BsonType : int {
-        /** 32bit integer */
-        INT32,
-        /** 64bit integer */
-        INT64,
-        /** double */
-        DOUBLE,
-        /** String */
-        STRING,
-        /** Boolean */
-        BOOL,
-        /** binary */
-        BINARY,
-        /** BSON Object */
-        OBJECT,
-        /** Array of BSON object */
-        ARRAY
-    };
 
     /**
      * BSON value
      */
-    class BsonValue {
+    class BsonValue : public BsonElement {
     public:
-        /**
-         * Get value type
-         * @return type
-         */
-        BsonType type() {
-            return m_type;
-        }
-
         /**
          * Create BsonValue
          * @tparam T type
@@ -60,44 +33,6 @@ namespace bsoncpp {
          */
         template<typename T>
         BsonType typeOf(const T& value);
-
-        virtual int32_t getInt32() {
-            throw "Not INT32";
-        }
-
-        virtual int64_t getInt64() {
-            throw "Not INT64";
-        }
-
-        virtual double getDouble() {
-            throw "Not DOUBLE";
-        }
-
-        virtual bool getBool() {
-            throw "Not BOOL";
-        }
-
-        virtual std::string& getString() {
-            throw "Not String";
-        }
-
-        virtual std::vector<uint8_t>& getBinary() {
-            throw "Not BINARY";
-        }
-
-        virtual std::shared_ptr<Bson> getObject() {
-            throw "Not BSON Object";
-        }
-
-        virtual std::shared_ptr<BsonArray> getArray() {
-            throw "Not ARRAY of BSON Object";
-        }
-
-        virtual std::string toJson() = 0;
-
-    protected:
-        /** Bson Type */
-        BsonType m_type;
     };
 
     template<typename T>
@@ -105,43 +40,36 @@ namespace bsoncpp {
     public:
         // default ctor
         BsonValueBase() {
-            m_type = typeOf(m_value);
         }
 
         // copy ctor
         BsonValueBase(const BsonValueBase& other) {
             m_value = other.m_value;
-            m_type = other.m_type;
         }
 
         // move ctor
         BsonValueBase(BsonValueBase &&other) {
             m_value = std::move(other.m_type);
-            m_type = other.m_type;
         }
 
         // copy operator
         BsonValueBase& operator=(const BsonValueBase& value) {
             m_value = value.get();
-            m_type = value.type();
         }
 
         // move operator
         BsonValueBase& operator=(BsonValueBase&& value) noexcept {
             m_value = std::move(value.get());
-            m_type = value.type();
         }
 
         // ctor with init value
         BsonValueBase(const T &value) {
             m_value = value;
-            m_type = typeOf(value);
         }
 
         // move value ctor
         BsonValueBase(T &&value) {
             m_value = std::move(value);
-            m_type = value.m_type;
         }
 
         /**
@@ -161,6 +89,10 @@ namespace bsoncpp {
     public:
         BsonValueInt32() {}
         BsonValueInt32(int32_t value) : BsonValueBase(value) {}
+
+        BsonType type() override {
+            return BsonType::INT32;
+        }
 
         int32_t getInt32() override {
             return m_value;
@@ -184,6 +116,10 @@ namespace bsoncpp {
         BsonValueInt64() {}
         BsonValueInt64(int64_t value) : BsonValueBase(value) {}
 
+        BsonType type() override {
+            return BsonType::INT64;
+        }
+
         int32_t getInt32() override {
             return m_value;
         }
@@ -205,6 +141,10 @@ namespace bsoncpp {
     public:
         BsonValueDouble() {}
         BsonValueDouble(double value) : BsonValueBase(value) {}
+
+        BsonType type() override {
+            return BsonType::DOUBLE;
+        }
 
         int32_t getInt32() override {
             return m_value;
@@ -228,6 +168,10 @@ namespace bsoncpp {
         BsonValueBool() {}
         BsonValueBool(bool value) : BsonValueBase(value) {}
 
+        BsonType type() override {
+            return BsonType::BOOL;
+        }
+
         bool getBool() override {
             return m_value;
         }
@@ -241,6 +185,10 @@ namespace bsoncpp {
     public:
         BsonValueString() {}
         BsonValueString(std::string value) : BsonValueBase(value) {}
+
+        BsonType type() override {
+            return BsonType::STRING;
+        }
 
         std::string& getString() override {
             return m_value;
@@ -257,6 +205,10 @@ namespace bsoncpp {
         BsonValueObject(std::shared_ptr<Bson> value) : BsonValueBase(value) {}
         BsonValueObject(const Bson& value); // copy!
 
+        BsonType type() override {
+            return BsonType::OBJECT;
+        }
+
         virtual std::shared_ptr<Bson> getObject() override {
             return m_value;
         }
@@ -269,6 +221,10 @@ namespace bsoncpp {
         BsonValueArray() {}
         BsonValueArray(std::shared_ptr<BsonArray> value) : BsonValueBase(value) {}
         BsonValueArray(const BsonArray& value); // copy!
+
+        BsonType type() override {
+            return BsonType::ARRAY;
+        }
 
         virtual std::shared_ptr<BsonArray> getArray() override {
             return m_value;
