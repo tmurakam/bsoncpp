@@ -1,6 +1,8 @@
 #include "BsonArray.hpp"
+#include "Document.hpp"
 
 namespace bsoncpp {
+
     std::string BsonArray::toJson() {
         std::string s = "[";
 
@@ -19,4 +21,5 @@ namespace bsoncpp {
         s += "]";
         return s;
     }
+
 }

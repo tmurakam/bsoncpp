@@ -1,7 +1,7 @@
-#include "Bson.hpp"
+#include "Document.hpp"
 
 namespace bsoncpp {
-    std::string Bson::toJson() {
+    std::string Document::toJson() {
         std::string s = "{";
 
         bool isFirst = true;
@@ -24,4 +24,5 @@ namespace bsoncpp {
         s += "}";
         return s;
     }
+
 }

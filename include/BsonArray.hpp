@@ -1,29 +1,34 @@
-#ifndef BSON_BSONARRAY_H
-#define BSON_BSONARRAY_H
+#ifndef BSONCPP_BSONARRAY_H
+#define BSONCPP_BSONARRAY_H
 
-#include "BsonValue.hpp"
+#include "BsonValues.hpp"
 
 #include <vector>
 
 namespace bsoncpp {
-    class BsonArray {
+
+    class BsonArray : public BsonElement {
     public:
+        BsonType type() override {
+            return BsonType::ARRAY;
+        }
+
         BsonArray() {}
 
-        BsonArray(const BsonArray& array) {
+        BsonArray(const BsonArray &array) {
             m_array = array.m_array;
         }
 
-        BsonArray(BsonArray&& array) {
+        BsonArray(BsonArray &&array) {
             m_array = std::move(array.m_array);
         }
 
-        BsonArray& operator=(const BsonArray& array) {
+        BsonArray &operator=(const BsonArray &array) {
             m_array = array.m_array;
             return *this;
         }
 
-        BsonArray& operator=(BsonArray&& array) {
+        BsonArray &operator=(BsonArray &&array) {
             m_array = std::move(array.m_array);
             return *this;
         }
@@ -37,23 +42,22 @@ namespace bsoncpp {
         }
 
         template<typename T>
-        BsonArray& push_back(const T& value) {
-            m_array.push_back(BsonValue::create(value));
+        BsonArray &push_back(const T &value) {
+            m_array.push_back(BsonElement::create(value));
             return *this;
         }
 
-        // special case
-        BsonArray& put(std::string key, const Bson& bson) {
-            m_array.push_back(std::make_shared<BsonValueObject>(bson));
+        BsonArray &asArray() override {
             return *this;
         }
 
-        std::string toJson();
+        std::string toJson() override;
 
     protected:
-        std::vector<std::shared_ptr<BsonValue>> m_array;
+        std::vector<std::shared_ptr<BsonElement>> m_array;
     };
+
 }
 
 
-#endif //BSON_BSONARRAY_H
+#endif

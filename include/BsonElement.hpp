@@ -1,78 +1,121 @@
-//
-// Created by 村上 卓弥 on 2019-02-17.
-//
-
-#ifndef BSON_BSONELEMENT_H
-#define BSON_BSONELEMENT_H
+#ifndef BSONCPP_BSONELEMENT_H
+#define BSONCPP_BSONELEMENT_H
 
 #include <iostream>
 #include <vector>
 
 namespace bsoncpp {
+    class Document;
+    class BsonArray;
 
-class Bson;
-class BsonArray;
+    /**
+     * Bson Type
+     */
+    enum class BsonType : int {
+        /** 32bit integer */
+                INT32,
+        /** 64bit integer */
+                INT64,
+        /** double */
+                DOUBLE,
+        /** String */
+                STRING,
+        /** Boolean */
+                BOOL,
+        /** binary */
+                BINARY,
+        /** BSON Document */
+                DOCUMENT,
+        /** Array */
+                ARRAY
+    };
 
-/**
- * Bson Type
- */
-enum class BsonType : int {
-    /** 32bit integer */
-            INT32,
-    /** 64bit integer */
-            INT64,
-    /** double */
-            DOUBLE,
-    /** String */
-            STRING,
-    /** Boolean */
-            BOOL,
-    /** binary */
-            BINARY,
-    /** BSON Object */
-            OBJECT,
-    /** Array of BSON object */
-            ARRAY
-};
+    /**
+     * Bson Element.
+     */
+    class BsonElement {
+    public:
+        virtual BsonType type() = 0;
 
-class BsonElement {
-public:
-    virtual BsonType type() = 0;
+        bool isInt32() {
+            return type() == BsonType::INT32;
+        }
 
-    virtual int32_t getInt32() {
-        throw "Not INT32";
-    }
+        bool isInt64() {
+            return type() == BsonType::INT64;
+        }
 
-    virtual int64_t getInt64() {
-        throw "Not INT64";
-    }
+        bool isDouble() {
+            return type() == BsonType::DOUBLE;
+        }
 
-    virtual double getDouble() {
-        throw "Not DOUBLE";
-    }
+        bool isNumber() {
+            return isInt32() || isInt64() || isDouble();
+        }
 
-    virtual bool getBool() {
-        throw "Not BOOL";
-    }
+        bool isBool() {
+            return type() == BsonType::BOOL;
+        }
 
-    virtual std::string& getString() {
-        throw "Not String";
-    }
+        bool isString() {
+            return type() == BsonType::STRING;
+        }
 
-    virtual std::vector<uint8_t>& getBinary() {
-        throw "Not BINARY";
-    }
+        bool isDocument() {
+            return type() == BsonType::DOCUMENT;
+        }
 
-    virtual std::shared_ptr<Bson> getObject() {
-        throw "Not BSON Object";
-    }
+        bool isArray() {
+            return type() == BsonType::ARRAY;
+        }
 
-    virtual std::shared_ptr<BsonArray> getArray() {
-        throw "Not ARRAY of BSON Object";
-    }
 
-    virtual std::string toJson() = 0;
-};
+        virtual int32_t asInt32() {
+            throw "Not INT32";
+        }
+
+        virtual int64_t asInt64() {
+            throw "Not INT64";
+        }
+
+        virtual double asDouble() {
+            throw "Not DOUBLE";
+        }
+
+        virtual bool asBool() {
+            throw "Not BOOL";
+        }
+
+        virtual std::string& asString() {
+            throw "Not String";
+        }
+
+        virtual std::vector<uint8_t>& asBinary() {
+            throw "Not BINARY";
+        }
+
+        virtual Document& asDocument() {
+            throw "Not BSON Object";
+        }
+
+        virtual BsonArray& asArray() {
+            throw "Not ARRAY of BSON Object";
+        }
+
+        static std::shared_ptr<BsonElement> create(int32_t value);
+        static std::shared_ptr<BsonElement> create(int64_t value);
+        static std::shared_ptr<BsonElement> create(double value);
+        static std::shared_ptr<BsonElement> create(bool value);
+        static std::shared_ptr<BsonElement> create(const std::string &value); // copy
+        static std::shared_ptr<BsonElement> create(std::string &&value); // move
+        static std::shared_ptr<BsonElement> create(const char *value); // copy
+        static std::shared_ptr<BsonElement> create(const Document &value); // copy
+        static std::shared_ptr<BsonElement> create(Document &&value); // move
+        static std::shared_ptr<BsonElement> create(const BsonArray &value); // copy
+        static std::shared_ptr<BsonElement> create(BsonArray &&value); // move
+
+        virtual std::string toJson() = 0;
+    };
 
 }
 

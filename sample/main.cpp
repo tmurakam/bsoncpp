@@ -2,23 +2,22 @@
 
 #include <Bson.hpp>
 
-using bsoncpp::Bson;
+using bsoncpp::Document;
 using bsoncpp::BsonArray;
-using bsoncpp::BsonValue;
 using std::cout;
 using std::cerr;
 using std::endl;
 using std::shared_ptr;
 
 int main() {
-    Bson bson1;
+    Document bson1;
     bson1.put("a", 1);
 
     BsonArray ary;
     ary.push_back(123);
     ary.push_back("xxx");
 
-    Bson bson;
+    Document bson;
     bson
             .put("key1", 12345)
             .put("key2", (int64_t)12345678901234567890UL)
@@ -30,8 +29,8 @@ int main() {
 
     cerr << bson.toJson() << endl;
 
-    auto b = bson.getObject("key6");
-    b->put("a", 2);
+    Document& b = bson.getDocument("key6");
+    b.put("a", 2);
 
     cerr << bson.toJson() << endl;
 
