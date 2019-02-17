@@ -22,12 +22,12 @@ namespace bsoncpp {
                 STRING,
         /** Boolean */
                 BOOL,
-        /** binary */
-                BINARY,
         /** BSON Document */
                 DOCUMENT,
         /** Array */
-                ARRAY
+                ARRAY,
+        /** binary */
+                BINARY
     };
 
     /**

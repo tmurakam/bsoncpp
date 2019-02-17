@@ -1,7 +1,7 @@
 #ifndef BSONCPP_DOCUMENT_H
 #define BSONCPP_DOCUMENT_H
 
-#include <unordered_map>
+#include <map>
 
 #include "BsonElement.hpp"
 #include "BsonValues.hpp"
@@ -10,10 +10,14 @@
 namespace bsoncpp {
 
     /**
-     * BSON Object
+     * BSON Document
      */
     class Document : public BsonElement {
     public:
+        /**
+         * Get element type
+         * @return type
+         */
         BsonType type() override {
             return BsonType::DOCUMENT;
         }
@@ -124,7 +128,7 @@ namespace bsoncpp {
         std::string toJson() override;
 
     protected:
-        std::unordered_map<std::string, std::shared_ptr<BsonElement>> m_map;
+        std::map<std::string, std::shared_ptr<BsonElement>> m_map;
     };
 
 }
