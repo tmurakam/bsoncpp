@@ -91,11 +91,11 @@ namespace bsoncpp {
         }
 
         virtual Document& asDocument() {
-            throw BsonException("Not BSON Object");
+            throw BsonException("Not Document");
         }
 
         virtual BsonArray& asArray() {
-            throw BsonException("Not ARRAY of BSON Object");
+            throw BsonException("Not ARRAY");
         }
 
         virtual std::vector<uint8_t>& asBinary() {

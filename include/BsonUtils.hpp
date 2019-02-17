@@ -4,6 +4,11 @@
 namespace bsoncpp {
     class BsonUtils {
     public:
+        /**
+         * Escape json string
+         * @param str
+         * @return escaped string
+         */
         static std::string escapeJson(const std::string& str);
     };
 }
