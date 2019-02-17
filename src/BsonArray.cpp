@@ -7,15 +7,14 @@ namespace bsoncpp {
         std::string s = "[";
 
         bool isFirst = true;
-        for (auto it = m_array.begin(); it != m_array.end(); it++) {
+        for (auto& e : m_array) {
             if (isFirst) {
                 isFirst = false;
             } else {
                 s += ", ";
             }
 
-            auto val = *it;
-            s += val->toJson();
+            s += e->toJson();
         }
 
         s += "]";

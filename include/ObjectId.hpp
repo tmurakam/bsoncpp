@@ -7,8 +7,8 @@ namespace bsoncpp {
     class ObjectId : public BsonElement {
     public:
         ObjectId();
-        ObjectId(const std::string& value);
-        ObjectId(const uint8_t* value);
+        explicit ObjectId(const std::string& value);
+        explicit ObjectId(const uint8_t* value);
 
         BsonType type() override {
             return BsonType::OID;

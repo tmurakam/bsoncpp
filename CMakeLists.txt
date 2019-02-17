@@ -7,10 +7,10 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 
 add_library(bsoncpp
         src/BsonElement.cpp
-        src/BsonValues.cpp
         src/Document.cpp
         src/BsonArray.cpp
-        src/BsonUtils.cpp include/ObjectId.hpp src/ObjectId.cpp)
+        src/BsonUtils.cpp
+        src/ObjectId.cpp)
 
 add_executable(sample sample/main.cpp)
 target_link_libraries(sample bsoncpp)

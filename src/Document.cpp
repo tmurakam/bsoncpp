@@ -6,15 +6,15 @@ namespace bsoncpp {
         std::string s = "{";
 
         bool isFirst = true;
-        for (auto it = m_map.begin(); it != m_map.end(); it++) {
+        for (auto &e : m_map) {
             if (isFirst) {
                 isFirst = false;
             } else {
                 s += ", ";
             }
 
-            auto key = it->first;
-            auto value = it->second;
+            auto key = e.first;
+            auto value = e.second;
 
             s += "\"";
             s += BsonUtils::escapeJson(key);

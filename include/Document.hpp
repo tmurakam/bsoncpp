@@ -25,7 +25,7 @@ namespace bsoncpp {
         /**
          * Default constructor.
          */
-        Document() {}
+        Document() = default;
 
         /**
          * Copy constructor.

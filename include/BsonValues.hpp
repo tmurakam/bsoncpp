@@ -12,7 +12,7 @@ namespace bsoncpp {
     public:
         BsonInt32() : m_value(0) {}
 
-        BsonInt32(int32_t value) : m_value(value) {}
+        explicit BsonInt32(int32_t value) : m_value(value) {}
 
         BsonType type() override {
             return BsonType::INT32;
@@ -42,7 +42,7 @@ namespace bsoncpp {
     public:
         BsonInt64() : m_value(0) {}
 
-        BsonInt64(int64_t value) : m_value(value) {}
+        explicit BsonInt64(int64_t value) : m_value(value) {}
 
         BsonType type() override {
             return BsonType::INT64;
@@ -72,7 +72,7 @@ namespace bsoncpp {
     public:
         BsonDouble() : m_value() {}
 
-        BsonDouble(double value) : m_value(value) {}
+        explicit BsonDouble(double value) : m_value(value) {}
 
         BsonType type() override {
             return BsonType::DOUBLE;
@@ -102,7 +102,7 @@ namespace bsoncpp {
     public:
         BsonBool() : m_value(false) {}
 
-        BsonBool(bool value) : m_value(value) {}
+        explicit BsonBool(bool value) : m_value(value) {}
 
         BsonType type() override {
             return BsonType::BOOL;
@@ -122,9 +122,9 @@ namespace bsoncpp {
 
     class BsonString : public BsonElement {
     public:
-        BsonString() {}
+        BsonString() = default;
 
-        BsonString(const std::string& value) : m_value(value) {}
+        explicit BsonString(std::string value) : m_value(std::move(value)) {}
 
         BsonType type() override {
             return BsonType::STRING;
@@ -144,9 +144,8 @@ namespace bsoncpp {
 
     class BsonBinary : public BsonElement {
     public:
-        BsonBinary() {}
-        BsonBinary(const std::vector<uint8_t>& value) : m_value(value) {}
-        BsonBinary(std::vector<uint8_t>&& value) : m_value(std::move(value)) {}
+        BsonBinary() = default;
+        explicit BsonBinary(std::vector<uint8_t> value) : m_value(std::move(value)) {}
 
         BsonType type() override {
             return BsonType::BINARY;

@@ -13,13 +13,13 @@ namespace bsoncpp {
             return BsonType::ARRAY;
         }
 
-        BsonArray() {}
+        BsonArray() = default;
 
         BsonArray(const BsonArray &array) {
             m_array = array.m_array;
         }
 
-        BsonArray(BsonArray &&array) {
+        BsonArray(BsonArray &&array) noexcept {
             m_array = std::move(array.m_array);
         }
 
@@ -28,7 +28,7 @@ namespace bsoncpp {
             return *this;
         }
 
-        BsonArray &operator=(BsonArray &&array) {
+        BsonArray &operator=(BsonArray &&array) noexcept {
             m_array = std::move(array.m_array);
             return *this;
         }
@@ -37,7 +37,7 @@ namespace bsoncpp {
             return m_array.empty();
         }
 
-        int size() {
+        size_t size() {
             return m_array.size();
         }
 
