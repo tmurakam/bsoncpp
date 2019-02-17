@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.13)
+project(bson)
+
+set(CMAKE_CXX_STANDARD 11)
+
+include_directories(${CMAKE_SOURCE_DIR}/include)
+
+add_library(bsoncpp
+        src/Bson.cpp
+        src/BsonValue.cpp)
+
+add_executable(sample sample/main.cpp)
+target_link_libraries(sample bsoncpp)
