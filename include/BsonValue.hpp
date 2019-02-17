@@ -19,6 +19,8 @@ namespace bsoncpp {
         DOUBLE,
         /** String */
         STRING,
+        /** Boolean */
+        BOOL,
         /** binary */
         BINARY,
         /** BSON Object */
@@ -47,7 +49,7 @@ namespace bsoncpp {
          * @return BsonValue
          */
         template<typename T>
-        static std::unique_ptr<BsonValue> create(T value);
+        static std::shared_ptr<BsonValue> create(T value);
 
         /**
          * Get type of value
@@ -70,6 +72,10 @@ namespace bsoncpp {
             throw "Not DOUBLE";
         }
 
+        virtual bool getBool() {
+            throw "Not BOOL";
+        }
+
         virtual std::string& getString() {
             throw "Not String";
         }
@@ -78,13 +84,15 @@ namespace bsoncpp {
             throw "Not BINARY";
         }
 
-        virtual Bson& getObject() {
+        virtual std::shared_ptr<Bson> getObject() {
             throw "Not BSON Object";
         }
 
         virtual std::vector<Bson>& getArray() {
             throw "Not ARRAY of BSON Object";
         }
+
+        virtual std::string toJson() = 0;
 
     protected:
         /** Bson Type */
@@ -152,18 +160,95 @@ namespace bsoncpp {
         double getDouble() override {
             return m_value;
         }
+
+        std::string toJson() override {
+            return std::to_string(m_value);
+        }
     };
 
-    /*
-    class BsonValueString : public BsonValue<std::string> {
+    class BsonValueInt64 : public BsonValueBase<int64_t> {
     public:
+        BsonValueInt64() {}
+        BsonValueInt64(int64_t value) : BsonValueBase(value) {}
+
+        int32_t getInt32() override {
+            return m_value;
+        }
+
+        int64_t getInt64() override {
+            return m_value;
+        }
+
+        double getDouble() override {
+            return m_value;
+        }
+
+        std::string toJson() override {
+            return std::to_string(m_value);
+        }
     };
 
-    class BsonValueBinary : public BsonValue<std::vector<uint8_t>> {
+    class BsonValueDouble : public BsonValueBase<double> {
     public:
-    };
-     */
+        BsonValueDouble() {}
+        BsonValueDouble(double value) : BsonValueBase(value) {}
 
+        int32_t getInt32() override {
+            return m_value;
+        }
+
+        int64_t getInt64() override {
+            return m_value;
+        }
+
+        double getDouble() override {
+            return m_value;
+        }
+
+        std::string toJson() override {
+            return std::to_string(m_value);
+        }
+    };
+
+    class BsonValueBool : public BsonValueBase<bool> {
+    public:
+        BsonValueBool() {}
+        BsonValueBool(bool value) : BsonValueBase(value) {}
+
+        bool getBool() override {
+            return m_value;
+        }
+
+        std::string toJson() override {
+            return m_value ? "true" : "false";
+        }
+    };
+
+    class BsonValueString : public BsonValueBase<std::string> {
+    public:
+        BsonValueString() {}
+        BsonValueString(std::string value) : BsonValueBase(value) {}
+
+        std::string& getString() override {
+            return m_value;
+        }
+
+        std::string toJson() override {
+            return "\"" + m_value + "\""; // TODO: no json escape
+        }
+    };
+
+    class BsonValueObject : public BsonValueBase<std::shared_ptr<Bson>> {
+    public:
+        BsonValueObject() {}
+        BsonValueObject(std::shared_ptr<Bson> value) : BsonValueBase(value) {}
+
+        virtual std::shared_ptr<Bson> getObject() override {
+            return m_value;
+        }
+
+        std::string toJson() override;
+    };
 }
 
 #endif //BSON_BSONVALUE_H
