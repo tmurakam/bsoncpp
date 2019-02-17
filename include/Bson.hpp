@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 #include "BsonValue.hpp"
+#include "BsonArray.hpp"
 
 namespace bsoncpp {
     /**
@@ -78,6 +79,11 @@ namespace bsoncpp {
         // special case
         Bson& put(std::string key, const Bson& bson) {
             m_map[key] = std::make_shared<BsonValueObject>(bson);
+            return *this;
+        }
+
+        Bson& put(std::string key, const BsonArray& ary) {
+            m_map[key] = std::make_shared<BsonValueArray>(ary);
             return *this;
         }
 

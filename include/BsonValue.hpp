@@ -6,6 +6,7 @@
 
 namespace bsoncpp {
     class Bson;
+    class BsonArray;
 
     /**
      * Bson Type
@@ -88,7 +89,7 @@ namespace bsoncpp {
             throw "Not BSON Object";
         }
 
-        virtual std::vector<Bson>& getArray() {
+        virtual std::shared_ptr<BsonArray> getArray() {
             throw "Not ARRAY of BSON Object";
         }
 
@@ -245,6 +246,19 @@ namespace bsoncpp {
         BsonValueObject(const Bson& value); // copy!
 
         virtual std::shared_ptr<Bson> getObject() override {
+            return m_value;
+        }
+
+        std::string toJson() override;
+    };
+
+    class BsonValueArray : public BsonValueBase<std::shared_ptr<BsonArray>> {
+    public:
+        BsonValueArray() {}
+        BsonValueArray(std::shared_ptr<BsonArray> value) : BsonValueBase(value) {}
+        BsonValueArray(const BsonArray& value); // copy!
+
+        virtual std::shared_ptr<BsonArray> getArray() override {
             return m_value;
         }
 

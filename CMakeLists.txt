@@ -6,8 +6,9 @@ set(CMAKE_CXX_STANDARD 11)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 add_library(bsoncpp
+        src/BsonValue.cpp
         src/Bson.cpp
-        src/BsonValue.cpp)
+        src/BsonArray.cpp)
 
 add_executable(sample sample/main.cpp)
 target_link_libraries(sample bsoncpp)

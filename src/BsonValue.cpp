@@ -1,5 +1,6 @@
 #include "BsonValue.hpp"
 #include "Bson.hpp"
+#include "BsonArray.hpp"
 
 using std::unique_ptr;
 
@@ -63,6 +64,10 @@ namespace bsoncpp {
     BsonType BsonValue::typeOf(const std::shared_ptr<Bson>& value) {
         return BsonType::OBJECT;
     }
+    template<>
+    BsonType BsonValue::typeOf(const std::shared_ptr<BsonArray>& value) {
+        return BsonType::ARRAY;
+    }
 
     // TODO:
 
@@ -75,6 +80,17 @@ namespace bsoncpp {
     }
 
     std::string BsonValueObject::toJson() {
+        return m_value->toJson();
+    }
+
+    /**
+     * Bson array
+     */
+    BsonValueArray::BsonValueArray(const BsonArray& value) : BsonValueBase() {
+        m_value = std::make_shared<BsonArray>(value); // copy
+    }
+
+    std::string BsonValueArray::toJson() {
         return m_value->toJson();
     }
 }
