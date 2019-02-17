@@ -7,27 +7,21 @@
 namespace bsoncpp {
     class Document;
     class BsonArray;
+    class ObjectId;
 
     /**
      * Bson Type
      */
     enum class BsonType : int {
-        /** 32bit integer */
-                INT32,
-        /** 64bit integer */
-                INT64,
-        /** double */
-                DOUBLE,
-        /** String */
-                STRING,
-        /** Boolean */
-                BOOL,
-        /** BSON Document */
-                DOCUMENT,
-        /** Array */
-                ARRAY,
-        /** binary */
-                BINARY
+        INT32,    /**< 32bit integer */
+        INT64,    /**< 64bit integer */
+        DOUBLE,   /**< double */
+        STRING,   /**< String */
+        BOOL,     /**< Boolean */
+        DOCUMENT, /**< BSON Document */
+        ARRAY,    /**< Array */
+        BINARY,   /**< binary */
+        OID       /**< Object Id */
     };
 
     /**
@@ -69,6 +63,10 @@ namespace bsoncpp {
             return type() == BsonType::ARRAY;
         }
 
+        bool isObjectId() {
+            return type() == BsonType::OID;
+        }
+
 
         virtual int32_t asInt32() {
             throw "Not INT32";
@@ -102,6 +100,10 @@ namespace bsoncpp {
             throw "Not BINARY";
         }
 
+        virtual ObjectId& asObjectId() {
+            throw "Not ObjectID";
+        }
+
         static std::shared_ptr<BsonElement> create(int32_t value);
         static std::shared_ptr<BsonElement> create(int64_t value);
         static std::shared_ptr<BsonElement> create(double value);
@@ -120,6 +122,8 @@ namespace bsoncpp {
         static std::shared_ptr<BsonElement> create(const std::vector<uint8_t>& value); // copy
         static std::shared_ptr<BsonElement> create(std::vector<uint8_t>&& value); // move
         static std::shared_ptr<BsonElement> create(const uint8_t *ptr, size_t len); // copy
+
+        static std::shared_ptr<BsonElement> create(const ObjectId& value);
 
         virtual std::string toJson() = 0;
     };

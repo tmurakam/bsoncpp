@@ -5,5 +5,6 @@
 #include "BsonValues.hpp"
 #include "Document.hpp"
 #include "BsonArray.hpp"
+#include "ObjectId.hpp"
 
 #endif

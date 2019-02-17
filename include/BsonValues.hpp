@@ -163,7 +163,6 @@ namespace bsoncpp {
     private:
         std::vector<uint8_t> m_value; // not immutable...
     };
-
 }
 
 #endif

@@ -4,6 +4,7 @@
 
 using bsoncpp::Document;
 using bsoncpp::BsonArray;
+using bsoncpp::ObjectId;
 using std::cout;
 using std::cerr;
 using std::endl;
@@ -18,6 +19,8 @@ int main() {
     ary.push_back("xxx");
     ary.push_back(bson1);
 
+    ObjectId oid;
+
     Document bson;
     bson
             .put("key1", 12345)
@@ -26,7 +29,8 @@ int main() {
             .put("key4", "String")
             .put("key5", true)
             .put("key6", bson1)
-            .put("key7", ary);
+            .put("key7", ary)
+            .put("key8", oid);
 
     cerr << bson.toJson() << endl;
 

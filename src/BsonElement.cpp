@@ -1,6 +1,7 @@
 #include "BsonElement.hpp"
 #include "BsonValues.hpp"
 #include "Document.hpp"
+#include "ObjectId.hpp"
 
 namespace bsoncpp {
 
@@ -58,5 +59,9 @@ namespace bsoncpp {
 
     std::shared_ptr<BsonElement> BsonElement::create(const uint8_t *ptr, size_t len) {
         return std::make_shared<BsonBinary>(std::vector<uint8_t>(ptr, ptr + len));
+    }
+
+    std::shared_ptr<BsonElement> BsonElement::create(const ObjectId &value) {
+        return std::make_shared<ObjectId>(value);
     }
 }
