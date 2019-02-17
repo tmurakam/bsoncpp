@@ -124,7 +124,7 @@ namespace bsoncpp {
     public:
         BsonString() {}
 
-        BsonString(std::string value) : m_value(value) {}
+        BsonString(const std::string& value) : m_value(value) {}
 
         BsonType type() override {
             return BsonType::STRING;
@@ -140,6 +140,28 @@ namespace bsoncpp {
 
     private:
         std::string m_value; // not immutable...
+    };
+
+    class BsonBinary : public BsonElement {
+    public:
+        BsonBinary() {}
+        BsonBinary(const std::vector<uint8_t>& value) : m_value(value) {}
+        BsonBinary(std::vector<uint8_t>&& value) : m_value(std::move(value)) {}
+
+        BsonType type() override {
+            return BsonType::BINARY;
+        }
+
+        std::vector<uint8_t>& asBinary() override {
+            return m_value;
+        }
+
+        std::string toJson() override {
+            throw "Binary toJson not supported!";
+        }
+
+    private:
+        std::vector<uint8_t> m_value; // not immutable...
     };
 
 }

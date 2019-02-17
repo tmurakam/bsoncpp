@@ -16,6 +16,7 @@ int main() {
     BsonArray ary;
     ary.push_back(123);
     ary.push_back("xxx");
+    ary.push_back(bson1);
 
     Document bson;
     bson

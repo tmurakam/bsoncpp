@@ -90,10 +90,6 @@ namespace bsoncpp {
             throw "Not String";
         }
 
-        virtual std::vector<uint8_t>& asBinary() {
-            throw "Not BINARY";
-        }
-
         virtual Document& asDocument() {
             throw "Not BSON Object";
         }
@@ -102,17 +98,28 @@ namespace bsoncpp {
             throw "Not ARRAY of BSON Object";
         }
 
+        virtual std::vector<uint8_t>& asBinary() {
+            throw "Not BINARY";
+        }
+
         static std::shared_ptr<BsonElement> create(int32_t value);
         static std::shared_ptr<BsonElement> create(int64_t value);
         static std::shared_ptr<BsonElement> create(double value);
         static std::shared_ptr<BsonElement> create(bool value);
+
         static std::shared_ptr<BsonElement> create(const std::string &value); // copy
         static std::shared_ptr<BsonElement> create(std::string &&value); // move
         static std::shared_ptr<BsonElement> create(const char *value); // copy
+
         static std::shared_ptr<BsonElement> create(const Document &value); // copy
         static std::shared_ptr<BsonElement> create(Document &&value); // move
+
         static std::shared_ptr<BsonElement> create(const BsonArray &value); // copy
         static std::shared_ptr<BsonElement> create(BsonArray &&value); // move
+
+        static std::shared_ptr<BsonElement> create(const std::vector<uint8_t>& value); // copy
+        static std::shared_ptr<BsonElement> create(std::vector<uint8_t>&& value); // move
+        static std::shared_ptr<BsonElement> create(const uint8_t *ptr, size_t len); // copy
 
         virtual std::string toJson() = 0;
     };
