@@ -40,10 +40,7 @@ namespace bsoncpp {
          * @param bson
          * @return this
          */
-        Bson& operator=(const Bson& bson) noexcept {
-            m_map = bson.m_map;
-            return *this;
-        }
+        Bson& operator=(const Bson& bson) = default;
 
         /**
          * Move assign operator
@@ -54,8 +51,6 @@ namespace bsoncpp {
             m_map = std::move(bson.m_map);
             return *this;
         }
-
-
 
         /**
          * Put value to Bson object

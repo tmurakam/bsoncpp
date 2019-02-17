@@ -109,15 +109,15 @@ namespace bsoncpp {
         }
 
         // copy ctor
-        BsonValueBase(const T &value) {
-            m_value = value;
-            m_type = typeOf(value);
+        BsonValueBase(const BsonValueBase& other) {
+            m_value = other.m_value;
+            m_type = other.m_type;
         }
 
         // move ctor
-        BsonValueBase(T &&value) {
-            m_value = std::move(value);
-            m_type = value.m_type;
+        BsonValueBase(BsonValueBase &&other) {
+            m_value = std::move(other.m_type);
+            m_type = other.m_type;
         }
 
         // copy operator
@@ -127,9 +127,21 @@ namespace bsoncpp {
         }
 
         // move operator
-        BsonValueBase& operator=(BsonValueBase&& value) {
+        BsonValueBase& operator=(BsonValueBase&& value) noexcept {
             m_value = std::move(value.get());
             m_type = value.type();
+        }
+
+        // ctor with init value
+        BsonValueBase(const T &value) {
+            m_value = value;
+            m_type = typeOf(value);
+        }
+
+        // move value ctor
+        BsonValueBase(T &&value) {
+            m_value = std::move(value);
+            m_type = value.m_type;
         }
 
         /**
