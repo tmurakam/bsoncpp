@@ -71,54 +71,138 @@ namespace bsoncpp {
          * @return this
          */
         template<typename T>
-        Document &put(std::string key, const T &value) {
+        Document &put(const std::string &key, const T &value) {
             m_map[key] = BsonElement::create(value);
             return *this;
         }
 
-        Document &put(std::string key, const std::shared_ptr<BsonElement> &value) {
-            m_map[key] = value;
-            return *this;
-        }
-
+        /**
+         * Check if has key?
+         * @param key
+         * @return
+         */
         bool contains(const std::string &key) {
             return m_map.find(key) != m_map.end();
         }
 
-        std::shared_ptr<BsonElement> get(std::string key) {
+        /**
+         * Get element.
+         * If no element, return null.
+         * @param key
+         * @return element ptr
+         */
+        std::shared_ptr<BsonElement> operator[](const std::string &key) {
             return m_map[key];
         }
 
+        /**
+         * Get element.
+         * If no element, throw exception.
+         * @param key
+         * @return element ptr
+         * @throws out_of_range No such key
+         */
+        std::shared_ptr<BsonElement> at(const std::string &key) {
+            return m_map.at(key);
+        }
+
+        /**
+         * Get type of element
+         * @param key
+         * @return BsonType
+         */
+        BsonType type(std::string &key) {
+            return at(key)->type();
+        }
+
+        /**
+         * Get int32 value.
+         * @param key
+         * @return
+         * @throws No key or invalid type.
+         */
         int32_t getInt32(const std::string &key) {
-            return m_map[key]->asInt32();
+            return at(key)->asInt32();
         }
 
+        /**
+         * Get int64 value.
+         * @param key
+         * @return
+         * @throws No key or invalid type.
+         */
         int64_t getInt64(const std::string &key) {
-            return m_map[key]->asInt64();
+            return at(key)->asInt64();
         }
 
+        /**
+         * Get double value.
+         * @param key
+         * @return
+         * @throws No key or invalid type.
+         */
         double getDouble(const std::string &key) {
-            return m_map[key]->asDouble();
+            return at(key)->asDouble();
         }
 
+        /**
+         * Get bool value.
+         * @param key
+         * @return
+         * @throws No key or invalid type.
+         */
         bool getBool(const std::string &key) {
-            return m_map[key]->asBool();
+            return at(key)->asBool();
         }
 
+        /**
+         * Get string value.
+         * @param key
+         * @return
+         * @throws No key or invalid type.
+        */
         std::string &getString(const std::string &key) {
-            return m_map[key]->asString();
+            return at(key)->asString();
         }
 
+        /**
+         * Get document.
+         * @param key
+         * @return
+         * @throws No key or invalid type.
+         */
         Document& getDocument(const std::string &key) {
-            return m_map[key]->asDocument();
+            return at(key)->asDocument();
         }
 
+        /**
+         * Get array.
+         * @param key
+         * @return
+         * @throws No key or invalid type.
+         */
         BsonArray& getArray(const std::string &key) {
-            return m_map[key]->asArray();
+            return at(key)->asArray();
         }
 
+        /**
+         * Get binary.
+         * @param key
+         * @return
+         * @throws No key or invalid type.
+         */
         std::vector<uint8_t> getBinary(const std::string &key) {
-            return m_map[key]->asBinary();
+            return at(key)->asBinary();
+        }
+
+        /**
+         * Get ObjectId.
+         * @param key
+         * @return
+         * @throws No key or invalid type.
+         */
+        ObjectId& getObjectId(const std::string &key) {
+            return at(key)->asObjectId();
         }
 
         Document& asDocument() override {
