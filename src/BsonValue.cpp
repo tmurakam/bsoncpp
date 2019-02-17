@@ -70,6 +70,10 @@ namespace bsoncpp {
     /**
      * BsonObject
      */
+    BsonValueObject::BsonValueObject(const Bson& value) : BsonValueBase() {
+        m_value = std::make_shared<Bson>(value); // copy
+    }
+
     std::string BsonValueObject::toJson() {
         return m_value->toJson();
     }

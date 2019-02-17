@@ -242,6 +242,7 @@ namespace bsoncpp {
     public:
         BsonValueObject() {}
         BsonValueObject(std::shared_ptr<Bson> value) : BsonValueBase(value) {}
+        BsonValueObject(const Bson& value); // copy!
 
         virtual std::shared_ptr<Bson> getObject() override {
             return m_value;

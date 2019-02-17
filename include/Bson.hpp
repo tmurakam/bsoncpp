@@ -54,6 +54,8 @@ namespace bsoncpp {
             return *this;
         }
 
+
+
         /**
          * Put value to Bson object
          *
@@ -73,13 +75,46 @@ namespace bsoncpp {
             return *this;
         }
 
+        // special case
+        Bson& put(std::string key, const Bson& bson) {
+            m_map[key] = std::make_shared<BsonValueObject>(bson);
+            return *this;
+        }
+
+        bool contains(const std::string& key) {
+            return m_map.find(key) != m_map.end();
+        }
 
         std::shared_ptr<BsonValue> get(std::string key) {
             return m_map[key];
         }
 
-        bool hasKey(std::string key) {
-            return m_map.find(key) != m_map.end();
+        int32_t getInt32(const std::string& key) {
+            return m_map[key]->getInt32();
+        }
+
+        int64_t getInt64(const std::string& key) {
+            return m_map[key]->getInt64();
+        }
+
+        double getDouble(const std::string& key) {
+            return m_map[key]->getDouble();
+        }
+
+        bool getBool(const std::string& key) {
+            return m_map[key]->getBool();
+        }
+
+        std::string& getString(const std::string& key) {
+            return m_map[key]->getString();
+        }
+
+        std::shared_ptr<Bson> getObject(const std::string& key) {
+            return m_map[key]->getObject();
+        }
+
+        std::vector<uint8_t> getBinary(const std::string& key) {
+            return m_map[key]->getBinary();
         }
 
         std::string toJson();
