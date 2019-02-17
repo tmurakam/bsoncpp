@@ -1,4 +1,5 @@
 #include "Document.hpp"
+#include "BsonUtils.hpp"
 
 namespace bsoncpp {
     std::string Document::toJson() {
@@ -16,7 +17,7 @@ namespace bsoncpp {
             auto value = it->second;
 
             s += "\"";
-            s += key; // TODO: no json escape!
+            s += BsonUtils::escapeJson(key);
             s += "\": ";
             s += value->toJson();
         }

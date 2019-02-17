@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "BsonElement.hpp"
+#include "BsonUtils.hpp"
 
 namespace bsoncpp {
     class BsonInt32 : public BsonElement {
@@ -134,7 +135,7 @@ namespace bsoncpp {
         }
 
         std::string toJson() override {
-            return "\"" + m_value + "\""; // TODO: no json escape
+            return "\"" + BsonUtils::escapeJson(m_value) + "\"";
         }
 
     private:

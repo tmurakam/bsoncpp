@@ -10,7 +10,7 @@ add_library(bsoncpp
         src/BsonValues.cpp
         src/Document.cpp
         src/BsonArray.cpp
-        )
+        src/BsonUtils.cpp)
 
 add_executable(sample sample/main.cpp)
 target_link_libraries(sample bsoncpp)
