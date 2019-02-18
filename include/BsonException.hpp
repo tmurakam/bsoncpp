@@ -1,6 +1,8 @@
 #ifndef BSONCPP_BSONEXCEPTION_H
 #define BSONCPP_BSONEXCEPTION_H
 
+#include <stdexcept>
+
 namespace bsoncpp {
     /**
      * BSON Exception

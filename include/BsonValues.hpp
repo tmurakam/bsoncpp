@@ -2,6 +2,7 @@
 #define BSONCPP_BSONVALUE_H
 
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include "BsonElement.hpp"

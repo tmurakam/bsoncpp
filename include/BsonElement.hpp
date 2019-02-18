@@ -2,6 +2,7 @@
 #define BSONCPP_BSONELEMENT_H
 
 #include <iostream>
+#include <memory>
 #include <vector>
 
 #include "BsonException.hpp"
